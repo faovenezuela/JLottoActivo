@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-may-2018 17:19:12 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.entidad.UsuariosLotto" table="usuarios_lotto" catalog="falvarez_lotto" optimistic-lock="version">
+        <id name="nombreUsuario" type="string">
+            <column name="nombre_usuario" />
+            <generator class="assigned" />
+        </id>
+        <property name="claveUsuario" type="string">
+            <column name="clave_usuario" not-null="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="apellido" type="string">
+            <column name="apellido" not-null="true" />
+        </property>
+        <property name="sexo" type="string">
+            <column name="sexo" length="2" not-null="true" />
+        </property>
+        <property name="idUsuarios" type="int">
+            <column name="id_usuarios" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

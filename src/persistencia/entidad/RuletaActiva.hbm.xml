@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-may-2018 17:19:12 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.entidad.RuletaActiva" table="ruleta_activa" catalog="falvarez_lotto" optimistic-lock="version">
+        <id name="numero" type="int">
+            <column name="numero" />
+            <generator class="assigned" />
+        </id>
+        <property name="numAnimalito" type="string">
+            <column name="num_animalito" length="3" not-null="true" />
+        </property>
+        <property name="animalito" type="string">
+            <column name="animalito" length="100" not-null="true" />
+        </property>
+        <property name="archivo" type="string">
+            <column name="archivo" />
+        </property>
+        <property name="flag" type="int">
+            <column name="flag" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
