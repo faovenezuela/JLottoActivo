@@ -6,7 +6,9 @@
 package presentacion;
 
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 import persistencia.entidad.RuletaActivaHoras;
 import persistencia.servicio.ServicioRuletaActivaHoras;
 
@@ -44,6 +46,8 @@ public class VentaTickets extends javax.swing.JInternalFrame {
         tbl_jugadas = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         lst_sorteo = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
+        cmb_numeros = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -116,6 +120,13 @@ public class VentaTickets extends javax.swing.JInternalFrame {
 
         jScrollPane2.setViewportView(lst_sorteo);
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,12 +138,14 @@ public class VentaTickets extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_cerrar))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lbl_ticket)
-                                .addGap(3, 3, 3)
-                                .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane2)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(lbl_ticket)
+                                    .addGap(3, 3, 3)
+                                    .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
@@ -146,6 +159,10 @@ public class VentaTickets extends javax.swing.JInternalFrame {
                                 .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 309, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(135, 135, 135)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,10 +176,15 @@ public class VentaTickets extends javax.swing.JInternalFrame {
                     .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_monto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(btn_cerrar)
                 .addContainerGap())
         );
@@ -210,20 +232,53 @@ public class VentaTickets extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        try {
         ServicioRuletaActivaHoras servicio = new ServicioRuletaActivaHoras();
         List<RuletaActivaHoras> RuletaActivaHoras = servicio.getAllRuletaActivaHoras();
+        //Comboxbo
         
+//        DefaultComboBoxModel cModel = (DefaultComboBoxModel)cmb_numeros.getModel();
+//        cModel.removeAllElements();
+//            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+//                cModel.addElement(RuletaActivaHora.sorteos());
+//                
+//                
+//            }
         //JList
-        DefaultListModel   lModel = (DefaultListModel)lst_sorteo.getModel();
-        lModel.removeAllElements();
-        for (RuletaActivaHoras RuletaActivaHora:RuletaActivaHoras){
-            lModel.addElement(RuletaActivaHora.sorteos());
+//        DefaultListModel   lModel = (DefaultListModel)lst_sorteo.getModel();
+//        lModel.removeAllElements();
+//            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+//                lModel.addElement(RuletaActivaHora.sorteos());
+//            }
+        //table
+        DefaultTableModel tModel = (DefaultTableModel)tbl_jugadas.getModel();
+        tModel.setRowCount(0);
+            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+                Object[] objetos = new Object[]{RuletaActivaHora.getDescripcion(),
+                    RuletaActivaHora.getHora().toString(),"",""};
+                tModel.addRow(objetos);
+                
+                
+            }
+//        for (RuletaActivaHoras RuletaActivaHora:RuletaActivaHoras){
+//            lModel.addElement(RuletaActivaHora.sorteos());
+//        }
+        }catch (Exception e){
+            System.out.println(" Error "+ e);
+            //log.error(e);
         }
-    }//GEN-LAST:event_formInternalFrameActivated
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
+    private javax.swing.JComboBox<String> cmb_numeros;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
