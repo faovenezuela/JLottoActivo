@@ -57,6 +57,7 @@ public class RuletaActivaHoras  implements java.io.Serializable {
     public String sorteos(){
         StringBuilder salida = new StringBuilder();
         salida.append(descripcion); 
+        salida.append(" ");
         salida.append(hora);
         return salida.toString();
     }

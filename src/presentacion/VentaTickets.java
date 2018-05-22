@@ -5,11 +5,17 @@
  */
 package presentacion;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Vector;
+import javax.swing.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import persistencia.entidad.Jugadas;
 import persistencia.entidad.RuletaActivaHoras;
+import persistencia.servicio.ServicioJugadas;
 import persistencia.servicio.ServicioRuletaActivaHoras;
 
 /**
@@ -17,12 +23,13 @@ import persistencia.servicio.ServicioRuletaActivaHoras;
  * @author csudo
  */
 public class VentaTickets extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form VentaTickets
-     */
+    DefaultListModel lModel = new DefaultListModel();
+    DefaultListModel lModel2 = new DefaultListModel();
+    
     public VentaTickets() {
+        
         initComponents();
+        CargaDatos();
     }
 
     /**
@@ -41,13 +48,16 @@ public class VentaTickets extends javax.swing.JInternalFrame {
         lbl_ticket1 = new javax.swing.JLabel();
         lbl_ticket2 = new javax.swing.JLabel();
         txt_numticket = new javax.swing.JTextField();
-        txt_monto1 = new javax.swing.JTextField();
+        txt_numero = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_jugadas = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         lst_sorteo = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         cmb_numeros = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lst_jugadas = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -72,6 +82,16 @@ public class VentaTickets extends javax.swing.JInternalFrame {
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
         });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
+        addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                formVetoableChange(evt);
+            }
+        });
 
         jPanel1.setBackground(java.awt.Color.lightGray);
 
@@ -84,9 +104,15 @@ public class VentaTickets extends javax.swing.JInternalFrame {
 
         lbl_ticket.setText("Ticket:");
 
+        txt_monto.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         txt_monto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_montoActionPerformed(evt);
+            }
+        });
+        txt_monto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_montoKeyPressed(evt);
             }
         });
 
@@ -96,15 +122,17 @@ public class VentaTickets extends javax.swing.JInternalFrame {
 
         txt_numticket.setEditable(false);
         txt_numticket.setBackground(new java.awt.Color(242, 242, 240));
+        txt_numticket.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txt_numticket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_numticketActionPerformed(evt);
             }
         });
 
-        txt_monto1.addActionListener(new java.awt.event.ActionListener() {
+        txt_numero.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txt_numero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_monto1ActionPerformed(evt);
+                txt_numeroActionPerformed(evt);
             }
         });
 
@@ -127,66 +155,80 @@ public class VentaTickets extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(lst_jugadas);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(lbl_ticket)
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btn_cerrar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane2)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(lbl_ticket)
-                                    .addGap(3, 3, 3)
-                                    .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbl_ticket1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lbl_ticket1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_monto1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_numero, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbl_ticket2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 309, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(135, 135, 135)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(411, 411, 411)
+                                .addComponent(btn_cerrar))
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane3))))
+                .addContainerGap(298, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_ticket)
-                    .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_monto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_ticket1)
                     .addComponent(lbl_ticket2)
-                    .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_monto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txt_numticket, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_numero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(btn_cerrar)
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmb_numeros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(btn_cerrar)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,7 +239,9 @@ public class VentaTickets extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 88, Short.MAX_VALUE))
         );
 
         pack();
@@ -211,24 +255,26 @@ public class VentaTickets extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_numticketActionPerformed
 
-    private void txt_monto1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_monto1ActionPerformed
+    private void txt_numeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_numeroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_monto1ActionPerformed
+    }//GEN-LAST:event_txt_numeroActionPerformed
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        ServicioRuletaActivaHoras servicio = new ServicioRuletaActivaHoras();
-        List<RuletaActivaHoras> RuletaActivaHoras = servicio.getAllRuletaActivaHoras();
-        
-        //JList
-        DefaultListModel   lModel = (DefaultListModel)lst_sorteo.getModel();
-        lModel.removeAllElements();
-        for (RuletaActivaHoras RuletaActivaHora:RuletaActivaHoras){
-            lModel.addElement(RuletaActivaHora.sorteos());
-        }
+            
+
+//        ServicioRuletaActivaHoras servicio = new ServicioRuletaActivaHoras();
+//        List<RuletaActivaHoras> RuletaActivaHoras = servicio.getAllRuletaActivaHoras();
+//        
+//        //JList
+//        DefaultListModel   lModel = (DefaultListModel)lst_sorteo.getModel();
+//        lModel.removeAllElements();
+//        for (RuletaActivaHoras RuletaActivaHora:RuletaActivaHoras){
+//            lModel.addElement(RuletaActivaHora.sorteos());
+//        }
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
@@ -250,11 +296,18 @@ public class VentaTickets extends javax.swing.JInternalFrame {
 //                
 //            }
         //JList
-//        DefaultListModel   lModel = (DefaultListModel)lst_sorteo.getModel();
-//        lModel.removeAllElements();
-//            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
-//                lModel.addElement(RuletaActivaHora.sorteos());
-//            }
+//        DefaultListModel lModel = new DefaultListModel();
+        //DefaultListModel lModel = (DefaultListModel)lst_sorteo.getModel();
+        //model.addElement(connection);
+        //lModel.clear();
+        lModel.removeAllElements();
+            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+                lModel.addElement(RuletaActivaHora.getDescripcion());
+            }
+        lst_sorteo.setModel(lModel);
+        
+                
+            
         //table
         DefaultTableModel tModel = (DefaultTableModel)tbl_jugadas.getModel();
         tModel.setRowCount(0);
@@ -274,21 +327,124 @@ public class VentaTickets extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        
+    }//GEN-LAST:event_formComponentShown
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JOptionPane.showMessageDialog(null, "Inicio");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_formVetoableChange
+//        JOptionPane.showMessageDialog(null, "Inicio");
+    }//GEN-LAST:event_formVetoableChange
+
+    private void txt_montoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_montoKeyPressed
+        
+        if (evt.getKeyCode()==10){
+            //JOptionPane.showMessageDialog(null, evt.getKeyCode());
+//            try {
+                ServicioJugadas servicio = new ServicioJugadas();
+                List<Jugadas> Jugadas = servicio.getAllJugadas();
+                //Creamos un vector donde agragamos los datos a insertar
+                Vector datos = new Vector();
+                this.lst_sorteo.getSelectedValue();
+                datos.add(this.txt_numticket.getText());
+                datos.add(txt_numero.getText());                
+                datos.add(txt_monto.getText());
+                Enumeration en = datos.elements();
+                    while(en.hasMoreElements())
+                        System.out.println(en.nextElement());
+                   }
+                
+//                if (datos.elements().){
+//                    
+//                }
+                //table
+//                DefaultTableModel tModel = (DefaultTableModel)tbl_jugadas.getModel();
+//                tModel.setRowCount(0);
+//                    for (Jugadas Jugada : Jugadas) {
+//                    
+//                        Object[] objetos = new Object[]{Jugada.getSorteo(),
+//                            Jugada.getNumAnimalito(),Jugada.getAnimalito(),Jugada.getMonto()};
+//                        tModel.addRow(objetos);
+//
+//
+//                    }
+        //        for (RuletaActivaHoras RuletaActivaHora:RuletaActivaHoras){
+        //            lModel.addElement(RuletaActivaHora.sorteos());
+        //        }
+//                }catch (Exception e){
+//                    System.out.println(" Error "+ e);
+//                    //log.error(e);
+//                }
+        }    
+    }//GEN-LAST:event_txt_montoKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JComboBox<String> cmb_numeros;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbl_ticket;
     private javax.swing.JLabel lbl_ticket1;
     private javax.swing.JLabel lbl_ticket2;
+    private javax.swing.JList<String> lst_jugadas;
     private javax.swing.JList<String> lst_sorteo;
     private javax.swing.JTable tbl_jugadas;
     private javax.swing.JTextField txt_monto;
-    private javax.swing.JTextField txt_monto1;
+    private javax.swing.JTextField txt_numero;
     private javax.swing.JTextField txt_numticket;
     // End of variables declaration//GEN-END:variables
+
+    private void CargaDatos() {
+        
+        try {
+            ServicioRuletaActivaHoras servicio = new ServicioRuletaActivaHoras();
+            List<RuletaActivaHoras> RuletaActivaHoras = servicio.getAllRuletaActivaHoras();
+
+            //JList
+            DefaultListModel lModel = new DefaultListModel();
+//            DefaultListModel lModel = (DefaultListModel)lst_sorteo.getModel();
+//            model.addElement(connection);
+            //lModel.clear();
+            lModel.removeAllElements();
+            
+            //Creamos un vector donde agragamos los datos a insertar
+//            Vector datos = new Vector();
+//            
+//            this.lst_sorteo.getSelectedValue();
+//            
+//            datos.add(this.txt_numticket.getText());
+//            datos.add(this.txt_monto.getText());
+            
+            
+            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+                lModel.addElement(RuletaActivaHora.getDescripcion());
+            }
+            lst_sorteo.setModel(lModel);
+
+
+
+            //table
+//            DefaultTableModel tModel = (DefaultTableModel)tbl_jugadas.getModel();
+//            tModel.setRowCount(0);
+//            for (RuletaActivaHoras RuletaActivaHora : RuletaActivaHoras) {
+//                Object[] objetos = new Object[]{RuletaActivaHora.getDescripcion(),
+//                    RuletaActivaHora.getHora().toString(),"",""};
+//                tModel.addRow(objetos);
+//
+//
+//            }
+
+        }catch (Exception e){
+            System.out.println(" Error "+ e);
+            //log.error(e);
+        }
+    }
 }
