@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-may-2018 17:19:12 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.entidad.RuletaActivaResultado" table="ruleta_activa_resultado" catalog="falvarez_lotto" optimistic-lock="version">
+        <id name="idResult" type="java.lang.Long">
+            <column name="id_result" />
+            <generator class="identity" />
+        </id>
+        <property name="idRuletaActiva" type="int">
+            <column name="id_ruleta_activa" not-null="true" />
+        </property>
+        <property name="fechaResult" type="timestamp">
+            <column name="fecha_result" length="19" not-null="true" />
+        </property>
+        <property name="resultado" type="string">
+            <column name="resultado" length="2" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

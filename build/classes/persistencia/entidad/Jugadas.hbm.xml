@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-may-2018 17:19:12 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.entidad.Jugadas" table="jugadas" catalog="falvarez_lotto" optimistic-lock="version">
+        <id name="numTicket" type="java.lang.Long">
+            <column name="Num_ticket" />
+            <generator class="identity" />
+        </id>
+        <property name="serial" type="string">
+            <column name="Serial" length="100" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="Fecha" length="19" not-null="true" />
+        </property>
+        <property name="sorteo" type="string">
+            <column name="Sorteo" length="10" not-null="true" />
+        </property>
+        <property name="animalito" type="string">
+            <column name="Animalito" length="100" not-null="true" />
+        </property>
+        <property name="numAnimalito" type="string">
+            <column name="Num_animalito" length="100" not-null="true" />
+        </property>
+        <property name="monto" type="int">
+            <column name="Monto" not-null="true" />
+        </property>
+        <property name="total" type="long">
+            <column name="Total" not-null="true" />
+        </property>
+        <property name="pagar" type="long">
+            <column name="Pagar" not-null="true" />
+        </property>
+        <property name="cantJugadas" type="int">
+            <column name="Cant_jugadas" not-null="true" />
+        </property>
+        <property name="imprimir" type="int">
+            <column name="Imprimir" not-null="true" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="Usuario" length="256" not-null="true" />
+        </property>
+        <property name="fechaCobro" type="timestamp">
+            <column name="Fecha_cobro" length="19" not-null="true" />
+        </property>
+        <property name="flagImprimir" type="boolean">
+            <column name="Flag_imprimir" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
