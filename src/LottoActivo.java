@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import presentacion.Acercade;
-import presentacion.VentaTickets;
+import presentacion.VentasTickets;
 
 
 public class LottoActivo extends javax.swing.JFrame {
@@ -150,7 +150,7 @@ public class LottoActivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuventasActionPerformed
-       VentaTickets venta = new VentaTickets();
+       VentasTickets venta = new VentasTickets();
        //Escritorio.add(venta, BorderLayout.CENTER);
        Escritorio.add(venta);
        //Escritorio.setMaximumSize(maximumSize);
@@ -191,12 +191,19 @@ public class LottoActivo extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 //new LottoActivo().setVisible(true);
+                
                 LottoActivo lotto = new LottoActivo();
+                
                 lotto.setLayout(new BorderLayout());
+                
                 JDesktopPane Escritorio = new JDesktopPane();
+                
                 lotto.add(Escritorio,BorderLayout.CENTER);
+                
                 lotto.setExtendedState(MAXIMIZED_BOTH);
+                
                 lotto.setVisible(true);
+                
 //                new LottoActivo().setLayout(new BorderLayout());
                 //JDesktopPane Escritorio = new JDesktopPane();
                 //new LottoActivo().add(Escritorio,BorderLayout.CENTER);
